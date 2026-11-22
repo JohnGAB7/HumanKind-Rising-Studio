@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>002 — Conscience et compulsivité</title>
+<style>
+  @font-face { font-family: "Cormorant"; src: url(fonts/CormorantGaramond-Regular.woff2) format("woff2"); font-weight: 400; font-style: normal; }
+  @font-face { font-family: "Cormorant"; src: url(fonts/CormorantGaramond-Italic.woff2) format("woff2"); font-weight: 400; font-style: italic; }
+  @font-face { font-family: "Montserrat"; src: url(fonts/Montserrat-Light.woff2) format("woff2"); font-weight: 300; }
+  html, body { margin: 0; background: #050b16; }
+  canvas { display: block; width: 360px; height: 640px; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script>
+// HumanKind Rising — 002 « Conscience et compulsivité »
+// Animation déterministe : renderFrame(t) dessine l'image à l'instant t (secondes).
+// Durée 69 s, calée sur la voix off v3 enregistrée par John (1 min 09).
+const W = 1080, H = 1920, CX = 540, CY = 960, DURATION = 69;
+const C = {
+  deep: [8, 24, 48], night: [4, 10, 22], black: [0, 0, 0],
+  turq: [64, 200, 196], turqSoft: [120, 220, 214],
+  gold: [232, 200, 130], copper: [214, 138, 84], white: [248, 246, 240],
+};
+const cv = document.getElementById("c");
+const ctx = cv.getContext("2d");
+
+// ---------- outils ----------
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, k) => a + (b - a) * k;
+const ss = (a, b, t) => { const k = clamp((t - a) / (b - a)); return k * k * (3 - 2 * k); };
+const easeIO = k => k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+const env = (t, a, b, fi = 0.7, fo = 0.7) => ss(a, a + fi, t) * (1 - ss(b - fo, b, t));
+const rgba = (c, a) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${clamp(a)})`;
+const mix = (c1, c2, k) => [lerp(c1[0], c2[0], k), lerp(c1[1], c2[1], k), lerp(c1[2], c2[2], k)];
+function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+
+// ---------- données fixes ----------
+const R = rng(7);
+const dust = Array.from({ length: 150 }, () => ({ x: R() * W, y: R() * H, s: 0.6 + R() * 2.2, v: 6 + R() * 18, ph: R() * 6.28, a: 0.08 + R() * 0.3 }));
+const NN = 64;
+const nodes = Array.from({ length: NN }, (_, i) => ({
+  sx: CX - 150 + R() * 300, sy: CY - 270 + R() * 540,           // dans l'écran stylisé
+  tx: 90 + R() * 900, ty: 260 + R() * 1500,                      // réseau
+  ph: R() * 6.28, f: 0.3 + R() * 0.6, a: i / NN * Math.PI * 2,   // angle sur la boucle
+}));
+
+// ---------- texte ----------
+function text(str, x, y, { font = "Cormorant", size = 88, style = "normal", weight = 400, color = C.white, alpha = 1, spacing = 0, rise = 0, glow = 18 } = {}) {
+  if (alpha <= 0.001) return;
+  ctx.save();
+  ctx.font = `${style} ${weight} ${size}px "${font}"`;
+  ctx.letterSpacing = spacing + "px";
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.shadowColor = "rgba(0,0,0,0.55)"; ctx.shadowBlur = glow;
+  ctx.fillStyle = rgba(color, alpha);
+  ctx.fillText(str, x + spacing / 2, y + (1 - alpha) * rise);
+  ctx.restore();
+}
+// Texte qui apparaît mot par mot
+function words(str, x, y, t, t0, t1, opts = {}) {
+  const parts = str.split(" ");
+  const size = opts.size || 88;
+  ctx.save();
+  ctx.font = `${opts.style || "normal"} 400 ${size}px "${opts.font || "Cormorant"}"`;
+  ctx.letterSpacing = (opts.spacing || 0) + "px";
+  const widths = parts.map(p => ctx.measureText(p).width);
+  const sp = ctx.measureText(" ").width;
+  ctx.restore();
+  const total = widths.reduce((a, b) => a + b, 0) + sp * (parts.length - 1);
+  let xx = x - total / 2;
+  const out = 1 - ss(t1 - 0.6, t1, t);
+  parts.forEach((p, i) => {
+    const a = ss(t0 + i * 0.18, t0 + i * 0.18 + 0.6, t) * out;
+    text(p, xx + widths[i] / 2, y, { ...opts, alpha: a * (opts.alpha ?? 1), rise: 18 });
+    xx += widths[i] + sp;
+  });
+}
+
+// ---------- éléments ----------
+function background(t) {
+  // nuit bleue → noir (rupture) → bleu → aube
+  const toBlack = ss(31.9, 32.3, t) * (1 - ss(44.5, 49, t));
+  let top = mix(C.deep, C.black, toBlack), bot = mix(C.night, C.black, toBlack);
+  const dawn = ss(56.5, 64, t);
+  top = mix(top, [10, 40, 70], dawn);
+  bot = mix(bot, [14, 52, 72], dawn);
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, rgba(top, 1)); g.addColorStop(1, rgba(bot, 1));
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // lueur cuivrée qui respire (absente sur fond noir)
+  const glowA = (0.16 + 0.05 * Math.sin(t * 0.8)) * (1 - toBlack);
+  const rg = ctx.createRadialGradient(CX, H * 0.62, 0, CX, H * 0.62, 900);
+  rg.addColorStop(0, rgba(C.copper, glowA)); rg.addColorStop(1, rgba(C.copper, 0));
+  ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+}
+
+function drawDust(t, amount) {
+  const goldK = ss(42, 50, t);
+  dust.forEach(d => {
+    const y = ((d.y - t * d.v) % H + H) % H;
+    const x = d.x + Math.sin(t * 0.4 + d.ph) * 14;
+    const a = d.a * (0.6 + 0.4 * Math.sin(t * 1.3 + d.ph)) * amount;
+    ctx.fillStyle = rgba(mix(C.white, C.gold, goldK), a);
+    ctx.beginPath(); ctx.arc(x, y, d.s, 0, 6.283); ctx.fill();
+  });
+}
+
+function camera(t) {
+  // léger mouvement permanent + mouvements par plan
+  let s = 1 + 0.015 * Math.sin(t * 0.35), r = 0.006 * Math.sin(t * 0.27), dx = 0, dy = 0;
+  if (t < 6.5) s *= lerp(0.86, 1.06, easeIO(clamp(t / 6.5)));                 // travelling avant
+  if (t >= 17.4 && t < 32.1) {                                                  // « coupes » de cadrage
+    const shots = [[1, 0], [1.15, 0.32], [0.92, -0.22], [1.2, 0.62], [1.05, 0.12], [1.12, -0.45]];
+    const k = (t - 17.4) / 2.45, i = Math.floor(k), f = ss(0, 0.12, k - i);
+    const a = shots[clamp(i, 0, 5)], b = shots[clamp(i + 1, 0, 5)];
+    s *= lerp(a[0], b[0], f); r += lerp(a[1], b[1], f) * 0.25;
+  }
+  if (t >= 32.1 && t < 42) s *= lerp(1, 1.08, (t - 32.1) / 9.9);                // lente approche du schéma
+  if (t >= 56.5) dx = -(t - 56.5) * 6;                                          // travelling latéral
+  ctx.translate(CX + dx, CY + dy); ctx.rotate(r); ctx.scale(s, s); ctx.translate(-CX, -CY);
+}
+
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+}
+
+function glowStroke(color, alpha, width, blur) {
+  ctx.save(); ctx.shadowColor = rgba(color, alpha); ctx.shadowBlur = blur;
+  ctx.strokeStyle = rgba(color, alpha); ctx.lineWidth = width; ctx.stroke(); ctx.restore();
+}
+
+// Plan 1 — l'écran et le fil tiré
+function scenePhone(t) {
+  const a = 1 - ss(5.8, 7.0, t);
+  if (a <= 0) return;
+  const pull = easeIO(ss(0.3, 2.2, t));
+  // écran stylisé
+  ctx.save(); ctx.globalAlpha = a * ss(0, 0.8, t);
+  roundRect(CX - 160, CY - 290, 320, 580, 42);
+  const g = ctx.createLinearGradient(0, CY - 290, 0, CY + 290);
+  g.addColorStop(0, rgba(C.turq, 0.22)); g.addColorStop(1, rgba(C.deep, 0.3));
+  ctx.fillStyle = g; ctx.fill();
+  glowStroke(C.turqSoft, 0.9, 3, 40);
+  // pulsation lumineuse de l'écran (attire)
+  const p = 0.5 + 0.5 * Math.sin(t * 4);
+  const rg = ctx.createRadialGradient(CX, CY, 0, CX, CY, 320);
+  rg.addColorStop(0, rgba(C.turq, 0.25 * p)); rg.addColorStop(1, rgba(C.turq, 0));
+  ctx.fillStyle = rg; ctx.fillRect(CX - 400, CY - 400, 800, 800);
+  ctx.restore();
+  // fil de lumière cuivré tiré vers l'écran
+  ctx.save(); ctx.globalAlpha = a;
+  const sx = -80, sy = 1780, ex = CX, ey = CY + 290;
+  const tension = Math.sin(t * 9) * 26 * (1 - pull * 0.6);
+  ctx.beginPath();
+  const n = 80;
+  for (let i = 0; i <= n * pull; i++) {
+    const u = i / n;
+    const x = lerp(sx, ex, u) + Math.sin(u * 9 + t * 2) * 40 * (1 - u) + tension * Math.sin(u * 3.14);
+    const y = lerp(sy, ey, u) - Math.sin(u * 3.14) * 220;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  glowStroke(C.copper, 0.95, 4, 26);
+  ctx.restore();
+}
+
+// Plans 2–3 — le réseau, puis l'effondrement en boucle
+function sceneNetwork(t) {
+  const a = ss(5.8, 7.2, t) * (1 - ss(17.2, 18.4, t));
+  if (a <= 0) return;
+  const spread = easeIO(ss(5.8, 8.8, t));
+  const collapse = easeIO(ss(14.6, 17.4, t));
+  const pan = -(t - 6) * 14;
+  const pts = nodes.map(n => {
+    let x = lerp(n.sx, n.tx, spread) + Math.sin(t * n.f + n.ph) * 18;
+    let y = lerp(n.sy, n.ty, spread) + Math.cos(t * n.f * 0.8 + n.ph) * 18 + pan * spread;
+    const lx = CX + Math.cos(n.a + t * 0.6) * 330, ly = CY + Math.sin(n.a + t * 0.6) * 330;
+    return [lerp(x, lx, collapse), lerp(y, ly, collapse)];
+  });
+  ctx.save(); ctx.globalAlpha = a;
+  ctx.lineWidth = 1.4;
+  for (let i = 0; i < NN; i++) for (let j = i + 1; j < NN; j++) {
+    const dx = pts[i][0] - pts[j][0], dy = pts[i][1] - pts[j][1], d = Math.hypot(dx, dy);
+    if (d < 230) {
+      ctx.strokeStyle = rgba(C.turq, (1 - d / 230) * 0.45 * (1 - collapse));
+      ctx.beginPath(); ctx.moveTo(pts[i][0], pts[i][1]); ctx.lineTo(pts[j][0], pts[j][1]); ctx.stroke();
+    }
+  }
+  pts.forEach((p, i) => {
+    const c = mix(C.turqSoft, C.copper, collapse);
+    const r = 3.5 + 1.5 * Math.sin(t * 2 + i);
+    ctx.save(); ctx.shadowColor = rgba(c, 0.9); ctx.shadowBlur = 14;
+    ctx.fillStyle = rgba(c, 0.9); ctx.beginPath(); ctx.arc(p[0], p[1], r, 0, 6.283); ctx.fill(); ctx.restore();
+  });
+  ctx.restore();
+}
+
+// Pictogrammes au trait
+function picto(kind, x, y, s, alpha, rot) {
+  if (alpha <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  ctx.beginPath();
+  if (kind === 0) { roundRect(-26, -46, 52, 92, 10); }
+  else if (kind === 1) { ctx.arc(0, 0, 44, 0, 6.283); ctx.moveTo(26, 0); ctx.arc(0, 0, 26, 0, 6.283); }
+  else { ctx.moveTo(-28, -42); ctx.lineTo(28, -42); ctx.lineTo(18, 42); ctx.lineTo(-18, 42); ctx.closePath(); ctx.moveTo(-24, -14); ctx.lineTo(24, -14); }
+  ctx.shadowColor = rgba(C.gold, alpha); ctx.shadowBlur = 16;
+  ctx.strokeStyle = rgba(C.white, alpha); ctx.lineWidth = 3; ctx.stroke();
+  ctx.restore();
+}
+
+// Angle du « comète » sur la boucle (intégration analytique de la vitesse)
+function loopAngle(t) {
+  // vitesse : accélère 17.4→31.5 (1.4 → 5.5 rad/s), arrêt net, puis lente 48→56
+  if (t < 17.4) return 0;
+  const T1 = Math.min(t, 31.6) - 17.4;
+  let ang = 1.4 * T1 + 0.5 * (4.1 / 14.2) * T1 * T1;
+  if (t > 48) { const T2 = Math.min(t, 60) - 48; ang += 1.6 * T2 - 0.5 * (1.4 / 12) * T2 * T2; }
+  return ang;
+}
+
+// Plans 4, 7, 8 — la boucle de la compulsion, éclairée, puis dénouée
+function sceneLoop(t) {
+  const aCompul = ss(16.4, 17.6, t) * (1 - ss(31.8, 32.1, t));
+  const aBack = ss(47.6, 50, t);
+  const a = Math.max(aCompul, aBack);
+  if (a <= 0) return;
+  const tighten = ss(17.4, 31.5, t);
+  const relax = ss(48, 56, t);
+  const unknot = easeIO(ss(56.5, 62, t));
+  let r = lerp(330, 210, tighten);
+  if (t > 47) r = lerp(240, 340, relax);
+  const wob = t > 47 ? lerp(18, 2, relax) : lerp(6, 22, tighten);
+  const ang = loopAngle(t);
+  const color = t > 47 ? mix(C.copper, C.gold, relax) : C.copper;
+  const horizonY = 1180;
+  const P = (u, ring = 0) => {
+    const th = u * 6.283 + ang * 0.15 + ring * 0.7;
+    const rr = r + ring * 34 * (1 - relax) + Math.sin(th * 5 + t * 3) * wob;
+    const cx = CX + Math.cos(th) * rr, cy = CY + Math.sin(th) * rr;
+    const lx = -260 + u * 1600, ly = horizonY + Math.sin(u * 12 + t) * 6 * (1 - unknot);
+    return [lerp(cx, lx, unknot), lerp(cy, ly, unknot)];
+  };
+  ctx.save(); ctx.globalAlpha = a;
+  const rings = t > 47 ? 1 : 1 + Math.round(tighten * 2);
+  for (let ring = rings - 1; ring >= 0; ring--) {
+    ctx.beginPath();
+    for (let i = 0; i <= 240; i++) { const p = P(i / 240, ring); i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }
+    glowStroke(color, ring === 0 ? 0.95 : 0.35, ring === 0 ? 4 : 2, 24);
+  }
+  // comète et traînée
+  if (unknot < 0.9) {
+    for (let k = 0; k < 26; k++) {
+      const th = ang - k * 0.07;
+      const rr = r + Math.sin(th * 5 + t * 3) * wob;
+      const x = lerp(CX + Math.cos(th) * rr, -260 + ((th / 6.283) % 1 + 1) % 1 * 1600, unknot);
+      const y = lerp(CY + Math.sin(th) * rr, horizonY, unknot);
+      ctx.fillStyle = rgba(C.white, (1 - k / 26) * 0.9 * (1 - unknot));
+      ctx.beginPath(); ctx.arc(x, y, 9 * (1 - k / 26) + 1.5, 0, 6.283); ctx.fill();
+    }
+  }
+  // pictogrammes qui tournent avec la compulsion
+  const pa = env(t, 19.5, 28.2, 1.0, 1.4) * aCompul;
+  for (let k = 0; k < 3; k++) {
+    const th = ang * 0.9 + k * 2.094;
+    picto(k, CX + Math.cos(th) * (r + 95), CY + Math.sin(th) * (r + 95), 1.1, pa, th * 0.2);
+  }
+  ctx.restore();
+}
+
+// Plan 5 — rupture fond noir : résister → tension
+function sceneResist(t) {
+  const a = env(t, 32.3, 42.2, 0.6, 0.8);
+  if (a <= 0) return;
+  const vib = Math.sin(t * 38) * 5 + Math.sin(t * 23) * 3;
+  const y = 1000, open = easeIO(ss(33.2, 34.4, t));
+  ctx.save(); ctx.globalAlpha = a;
+  // ligne tendue entre deux flèches opposées
+  const L = lerp(40, 320, open);
+  ctx.beginPath();
+  for (let i = 0; i <= 120; i++) {
+    const u = i / 120, x = CX - L + 2 * L * u;
+    ctx.lineTo(x, y + Math.sin(u * 3.14 * 6 + t * 30) * 7 * open * Math.sin(u * 3.14));
+  }
+  ctx.strokeStyle = rgba(C.white, 0.85); ctx.lineWidth = 2.5; ctx.stroke();
+  [[-1], [1]].forEach(([d]) => {
+    const x = CX + d * (L + 10 + vib * d);
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - d * 34, y - 24); ctx.moveTo(x, y); ctx.lineTo(x - d * 34, y + 24);
+    ctx.strokeStyle = rgba(C.copper, 0.95); ctx.lineWidth = 4; ctx.stroke();
+  });
+  ctx.restore();
+  text("résister", CX, 820, { font: "Montserrat", weight: 300, size: 64, spacing: 14, alpha: a * ss(32.4, 33.2, t), rise: 20 });
+  text("↓", CX, 1130, { font: "Montserrat", weight: 300, size: 50, color: C.gold, alpha: a * ss(35, 35.8, t) });
+  text("tension", CX, 1230, { font: "Montserrat", weight: 300, size: 54, spacing: 12, color: C.gold, alpha: a * ss(35.4, 36.4, t), rise: 20 });
+}
+
+// Plan 6 — conscience → espace (halo d'or)
+function sceneHalo(t) {
+  const a = ss(42.2, 43.4, t) * (1 - ss(59, 64, t));
+  if (a <= 0) return;
+  const grow = easeIO(ss(42.2, 47.5, t));
+  const rad = lerp(10, 760, grow) + Math.sin(t * 1.2) * 20;
+  const rg = ctx.createRadialGradient(CX, CY, 0, CX, CY, rad);
+  rg.addColorStop(0, rgba(C.gold, 0.42 * a)); rg.addColorStop(0.45, rgba(C.gold, 0.14 * a)); rg.addColorStop(1, rgba(C.gold, 0));
+  ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+  ctx.beginPath(); ctx.arc(CX, CY, rad * 0.55, 0, 6.283);
+  glowStroke(C.gold, 0.5 * a * (1 - ss(47, 49, t)), 2, 30);
+  const ta = env(t, 42.6, 48.4, 0.8, 0.8);
+  text("conscience", CX, 820, { style: "italic", size: 118, color: C.white, alpha: ta, rise: 24, glow: 30 });
+  text("↓", CX, 1130, { font: "Montserrat", weight: 300, size: 50, color: C.gold, alpha: env(t, 44.4, 48.4, 0.6, 0.8) });
+  text("espace", CX, 1230, { font: "Montserrat", weight: 300, size: 54, spacing: 16, color: C.gold, alpha: env(t, 44.8, 48.4, 0.8, 0.8), rise: 20 });
+}
+
+// Plan 9 — horizon, reflets, colombe
+function sceneHorizon(t) {
+  const a = ss(60, 63.5, t);
+  if (a <= 0) return;
+  const hy = 1180;
+  // ciel
+  const g = ctx.createLinearGradient(0, 0, 0, hy);
+  g.addColorStop(0, rgba([10, 40, 70], a)); g.addColorStop(0.7, rgba(C.turq, 0.35 * a)); g.addColorStop(1, rgba(C.copper, 0.75 * a));
+  ctx.fillStyle = g; ctx.fillRect(-200, 0, W + 400, hy);
+  // eau
+  const w = ctx.createLinearGradient(0, hy, 0, H);
+  w.addColorStop(0, rgba(C.copper, 0.35 * a)); w.addColorStop(0.3, rgba([12, 46, 70], a)); w.addColorStop(1, rgba(C.night, a));
+  ctx.fillStyle = w; ctx.fillRect(-200, hy, W + 400, H - hy);
+  // soleil qui monte
+  const sy = hy - ss(60, 69, t) * 90;
+  const sg = ctx.createRadialGradient(CX, sy, 0, CX, sy, 420);
+  sg.addColorStop(0, rgba(C.gold, 0.85 * a)); sg.addColorStop(0.15, rgba(C.gold, 0.45 * a)); sg.addColorStop(1, rgba(C.copper, 0));
+  ctx.fillStyle = sg; ctx.fillRect(-200, 0, W + 400, hy + 40);
+  // reflets
+  for (let i = 0; i < 34; i++) {
+    const y = hy + 14 + i * i * 0.55 + 6;
+    const len = (220 - i * 5) * (0.7 + 0.3 * Math.sin(t * 1.7 + i));
+    const x = CX + Math.sin(t * 0.9 + i * 1.3) * 30;
+    ctx.strokeStyle = rgba(C.gold, (0.5 - i * 0.013) * a); ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(x - len / 2, y); ctx.lineTo(x + len / 2, y); ctx.stroke();
+  }
+  // ligne d'horizon
+  ctx.beginPath(); ctx.moveTo(-200, hy); ctx.lineTo(W + 200, hy); glowStroke(C.gold, 0.8 * a, 2, 20);
+}
+
+function dove(x, y, s, flap, alpha) {
+  if (alpha <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.shadowColor = rgba(C.gold, alpha); ctx.shadowBlur = 18;
+  ctx.strokeStyle = rgba(C.white, alpha); ctx.lineWidth = 3.2;
+  // corps
+  ctx.beginPath();
+  ctx.moveTo(-70, 10); ctx.quadraticCurveTo(-20, 28, 30, 14); ctx.quadraticCurveTo(58, 6, 70, -10);
+  ctx.quadraticCurveTo(60, -18, 50, -12); ctx.quadraticCurveTo(30, -4, 10, 0);
+  ctx.moveTo(-70, 10); ctx.lineTo(-96, 0); ctx.moveTo(-70, 10); ctx.lineTo(-94, 22);
+  ctx.stroke();
+  // ailes
+  const wy = -60 * flap;
+  ctx.fillStyle = rgba(C.white, alpha * 0.12);
+  ctx.beginPath(); ctx.moveTo(-10, 4); ctx.bezierCurveTo(-30, wy - 40, -90, wy - 70, -130, wy - 95);
+  ctx.bezierCurveTo(-80, wy - 30, -40, wy * 0.2, 16, 2); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(6, 2); ctx.bezierCurveTo(10, wy - 50, -10, wy - 100, -40, wy - 130);
+  ctx.bezierCurveTo(0, wy - 50, 20, wy * 0.2, 30, 4); ctx.fill(); ctx.stroke();
+  ctx.restore();
+}
+
+// ---------- textes à l'écran (leçons, jamais la voix off) ----------
+function lessons(t) {
+  words("Qui décide ?", CX, 420, t, 1.4, 5.8, { size: 104, style: "italic" });
+  words("Un progrès réel.", CX, 960, t, 8.6, 13.6, { size: 100 });
+  // mot seul : compulsion
+  const ca = env(t, 15.4, 18.6, 0.6, 0.9);
+  text("COMPULSION", CX, CY, { font: "Montserrat", weight: 300, size: 58, spacing: lerp(30, 14, ss(15.4, 18, t)), alpha: ca, glow: 24 });
+  words("Le geste avant la pensée.", CX, 400, t, 19.8, 25.4, { size: 84 });
+  words("Une impulsion", CX, 370, t, 26.3, 31.6, { size: 84 });
+  words("n'est pas un ordre.", CX, 470, t, 26.9, 31.6, { size: 84 });
+  words("Rien à retenir.", CX, 1420, t, 63.6, 66.4, { size: 92 });
+  words("Tout à voir.", CX, 1530, t, 64.3, 66.4, { size: 92, color: C.gold });
+}
+
+// ---------- rendu ----------
+function renderFrame(t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalAlpha = 1;
+  background(t);
+  ctx.save();
+  camera(t);
+  sceneHorizon(t);
+  scenePhone(t);
+  sceneNetwork(t);
+  sceneHalo(t);
+  sceneLoop(t);
+  ctx.restore();
+  drawDust(t, 1 - 0.6 * ss(31.9, 32.3, t) * (1 - ss(42, 45, t)));
+  sceneResist(t);
+  lessons(t);
+  // colombe et signature
+  const da = ss(62.6, 64, t);
+  const dy = lerp(1160, 760, easeIO(ss(62.6, 67.5, t)));
+  dove(CX + 30 + Math.sin(t * 0.8) * 20, dy, lerp(0.7, 1.45, ss(62.6, 67, t)), Math.sin(t * 4.2), da);
+  const sa = ss(66.4, 67.3, t);
+  text("HumanKind Rising", CX, 1470, { size: 82, alpha: sa, rise: 16, glow: 26 });
+  text("POUR LA BEAUTÉ DE LA VIE", CX, 1560, { font: "Montserrat", weight: 300, size: 30, spacing: 10, color: C.gold, alpha: ss(67, 67.8, t) });
+  // vignette douce
+  const vg = ctx.createRadialGradient(CX, CY, 500, CX, CY, 1250);
+  vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,0.45)");
+  ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+}
+
+window.DURATION = DURATION;
+window.renderFrame = renderFrame;
+window.ready = Promise.all([
+  document.fonts.load('400 80px "Cormorant"'),
+  document.fonts.load('italic 400 80px "Cormorant"'),
+  document.fonts.load('300 40px "Montserrat"'),
+]).then(() => { renderFrame(0); return true; });
+
+// Aperçu en navigateur : lecture en boucle (ignoré pendant le rendu)
+if (!location.search.includes("render")) {
+  const t0 = performance.now();
+  window.ready.then(() => { const loop = () => { renderFrame(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); }; loop(); });
+}
+</script>
+</body>
+</html>

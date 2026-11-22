@@ -1,23 +1,21 @@
-# Storyboard — Le geste redevient un choix (v2)
+# Storyboard — Le geste redevient un choix (v3, 69 s)
 
-Format 1080 × 1920, 9:16, 30 i/s, **56 s**, MP4 H.264 sans piste audio. Motion design abstrait, aucun visage, aucune interface de marque.
+Format 1080 × 1920, 9:16, 30 i/s, **69 s** (durée de l'enregistrement de John), MP4 H.264 sans piste audio. Motion design entièrement animé, généré par le code de `animation/` (aucune banque d'images, aucun visage, aucune interface de marque).
 
-Métaphore directrice : **le fil**. Fil de lumière tiré par l'élan → boucle de la compulsion → fil dénoué qui devient horizon.
+Métaphore directrice : **le fil**. Fil de lumière tiré vers l'écran → réseau des outils → boucle de la compulsion → halo de la conscience → fil dénoué qui devient horizon.
 
-Palette : bleu profond (fond), turquoise (vie, réseau), cuivre (passé, chaleur), or doux (conscience), blanc (texte). Textes dans la zone de sécurité centrale (marges ≈ 120 px latérales, 250 px haut, 380 px bas).
+Palette : bleu profond, turquoise, cuivre, or doux, blanc. Textes dans la zone de sécurité TikTok.
 
-| # | Temps | Voix off (repère) | Visuel | Mouvement | Transition | Texte |
-|---|---|---|---|---|---|---|
-| 1 | 0–5 s | « Combien de fois… vraiment décidé ? » | Sur bleu profond, un fil de lumière cuivrée est soudain tiré vers un rectangle lumineux (écran stylisé, sans interface) | Travelling avant rapide puis arrêt suspendu, parallax sur trois plans | Le rectangle se dissout en points | — |
-| 2 | 5–10 s | « Nos outils nous ont offert un temps immense… » | Les points se relient en un réseau turquoise, lumière douce | Panoramique ascendant, points qui respirent | Le réseau se densifie | **Un progrès réel.** (6–10 s) |
-| 3 | 10–14 s | « Ce ne sont pas eux qui nous échappent. » | Le réseau se calme ; un seul fil cuivré s'en détache et commence à tourner | Zoom avant lent sur le fil | Le fil s'enroule | — |
-| 4 | 14–21 s | « C'est la compulsion… nous peser » | Les points s'enroulent en une boucle fermée qui se resserre ; trois pictogrammes minimalistes (écran, assiette, verre) glissent sur la boucle | Rotation qui accélère, montage plus serré (changement de cadrage toutes les ≈ 2 s) | Arrêt net de la rotation | **Le geste avant la pensée.** (17–21 s) |
-| 5 | 21–28 s | « Alors on serre les poings… résister » | Les pictogrammes s'effacent ; seule reste la boucle, ligne qui revient toujours au même point | Zoom lent vers le point de retour | Coupe sèche au noir | **Une impulsion n'est pas un ordre.** (23–28 s) |
-| 6 | 28–33 s | « Mais résister, c'est encore être tiré dans deux directions. » | **Rupture : fond noir.** Le mot *résister* en Montserrat Light, deux flèches opposées qui tirent l'une contre l'autre | Tension légère (vibration des flèches) | Les flèches se figent ; un halo or apparaît | Schéma : **résister → tension** |
-| 7 | 33–38 s | « Face à la compulsion… la conscience… sans le combattre. » | Sur le même fond noir, le mot *conscience* ; un cercle de lumière or s'ouvre doucement | Ouverture lente du halo | Le halo éclaire la boucle qui réapparaît | Schéma : **conscience → espace** |
-| 8 | 38–45 s | « Là où la compulsion agit à notre place, la conscience nous rend la main. » | La boucle, éclairée par le halo, se desserre puis se dénoue | Travelling latéral qui suit le fil | Le fil se tend et devient ligne d'horizon | — |
-| 9 | 45–56 s | « Ce n'est pas de la retenue. C'est de la liberté. » | Horizon turquoise et cuivre, lumière qui monte ; une colombe en trait fin se détache de la ligne et s'élève | Lente montée de caméra | Fondu vers le bleu profond | **Rien à retenir. Tout à voir.** (45–50 s) puis 🕊️ **HumanKind Rising** (50–56 s) |
+Les repères de voix off sont estimés à partir du nombre de mots et des pauses ; un décalage d'une seconde environ est possible et se corrige dans Canva en glissant la piste voix.
 
-## Notes
-
-- La durée finale sera recalée sur l'enregistrement de John s'il dépasse 50 s (plafond 60 s).
+| # | Temps | Voix off (repère) | Visuel et mouvement | Transition | Texte à l'écran |
+|---|---|---|---|---|---|
+| 1 | 0–6,3 s | « Combien de fois… vraiment décidé ? » | Écran stylisé qui pulse ; un fil cuivré est tiré vers lui. Travelling avant. | L'écran se dissout en points | *Qui décide ?* |
+| 2 | 6,3–15,3 s | « Nos outils… nous échappent. » | Les points forment un réseau turquoise qui respire ; panoramique ascendant | Le réseau s'effondre en cercle | Un progrès réel. |
+| 3 | 15,3–17,5 s | « C'est la compulsion. » | Mot seul au centre du cercle de points | Les points deviennent une boucle | COMPULSION |
+| 4 | 17,5–32 s | « Ce geste qui revient… nous peser. » | Boucle cuivrée qui se resserre et se dédouble ; une comète tourne de plus en plus vite ; écran, assiette et verre au trait gravitent. Changement de cadrage toutes les ≈ 2,5 s | Arrêt net, coupe au noir | Le geste avant la pensée. / Une impulsion n'est pas un ordre. |
+| 5 | 32–42 s | « Alors on serre les poings… deux directions. » | **Rupture fond noir** : deux flèches tirent en sens opposés sur une ligne qui vibre. Lente approche | Fondu | Schéma : résister ↓ tension |
+| 6 | 42–48,7 s | « Face à la compulsion… la conscience. » | Un halo d'or s'ouvre dans le noir | Le halo éclaire la boucle qui revient | Schéma : *conscience* ↓ espace |
+| 7 | 48,7–56,5 s | « Remarquer l'élan… sans le combattre. » | La boucle, devenue dorée, ralentit et s'élargit | La boucle se déroule | — |
+| 8 | 56,5–63,3 s | « Là où la compulsion… nous rend la main. » | Le fil se dénoue et devient ligne d'horizon ; travelling latéral, l'aube monte | L'horizon s'ouvre | — |
+| 9 | 63,3–69 s | « Ce n'est pas de la retenue. C'est de la liberté. » | Ciel turquoise et cuivre, reflets sur l'eau, soleil qui monte ; une colombe au trait s'élève | — | Rien à retenir. Tout à voir. → HumanKind Rising · Pour la beauté de la Vie |

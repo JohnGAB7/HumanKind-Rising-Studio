@@ -1,11 +1,14 @@
 # Rapport de production
 
-- Durée demandée : 60 s maximum (John, 22/11/2026). Cible proposée par Claude : ≈ 56 s.
-- Format : vertical 9:16, 1080 × 1920.
-- Export attendu : MP4 H.264.
-- Audio : aucune piste audio.
-- Revue Claude : faite (`06-claude-review.md`).
-- Voix off : v3 validée (1 min 09 enregistrée), resserrée en v3.1 pour passer sous 60 s ; durée v3.1 en attente. v1 écartée pour proximité avec la source. Durée d’enregistrement en attente.
-- Storyboard : rédigé (`10-storyboard.md`), en attente de validation.
-- Vidéo finale : non produite (attend la validation de la voix off et du storyboard).
-- Contrôles techniques : à effectuer après rendu.
+- Durée : **69 s**, calée sur l'enregistrement ElevenLabs de la voix off v3 (validée par John le 22/11/2026).
+- Format : vertical 9:16, 1080 × 1920, 30 i/s.
+- Export : MP4 H.264, yuv420p.
+- Audio : aucune piste audio (vérifiée automatiquement par le workflow).
+- Revue Claude : `06-claude-review.md`.
+- Voix off : `07-final-voiceover.md` (v3).
+- Storyboard : `10-storyboard.md`.
+- Animation : `animation/animation.html` (motion design en code, aperçu possible dans un navigateur), rendue par `animation/render.js`.
+- Rendu : GitHub Actions, workflow « Rendu vidéo (MP4 silencieux) ». Le MP4 est disponible en artefact du run (30 jours).
+- Polices : Cormorant Garamond et Montserrat (Google Fonts, licence SIL OFL), incluses dans `animation/fonts/`.
+- Contrôles techniques : voir `controle.txt` dans l'artefact du run.
+- Validation éditoriale finale : John (synchronisation avec la voix dans Canva).
