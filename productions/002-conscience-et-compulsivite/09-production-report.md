@@ -5,7 +5,7 @@
 - Export attendu : MP4 H.264.
 - Audio : aucune piste audio.
 - Revue Claude : faite (`06-claude-review.md`).
-- Voix off : version 2 rédigée (v1 écartée pour proximité avec la source), en attente de validation par John.
+- Voix off : version 2 validée par John (v1 écartée pour proximité avec la source). Durée d’enregistrement en attente.
 - Storyboard : rédigé (`10-storyboard.md`), en attente de validation.
 - Vidéo finale : non produite (attend la validation de la voix off et du storyboard).
 - Contrôles techniques : à effectuer après rendu.

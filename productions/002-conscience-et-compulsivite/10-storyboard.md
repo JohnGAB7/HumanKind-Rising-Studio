@@ -8,7 +8,7 @@ Palette : bleu profond (fond), turquoise (vie, réseau), cuivre (passé, chaleur
 
 | # | Temps | Voix off (repère) | Visuel | Mouvement | Transition | Texte |
 |---|---|---|---|---|---|---|
-| 1 | 0–5 s | « Une main se tend… l'ait décidé. » | Sur bleu profond, un fil de lumière cuivrée est soudain tiré vers un rectangle lumineux (écran stylisé, sans interface) | Travelling avant rapide puis arrêt suspendu, parallax sur trois plans | Le rectangle se dissout en points | — |
+| 1 | 0–5 s | « Combien de fois… vraiment décidé ? » | Sur bleu profond, un fil de lumière cuivrée est soudain tiré vers un rectangle lumineux (écran stylisé, sans interface) | Travelling avant rapide puis arrêt suspendu, parallax sur trois plans | Le rectangle se dissout en points | — |
 | 2 | 5–10 s | « Nos outils nous ont offert un temps immense… » | Les points se relient en un réseau turquoise, lumière douce | Panoramique ascendant, points qui respirent | Le réseau se densifie | **Un progrès réel.** (6–10 s) |
 | 3 | 10–14 s | « Ce ne sont pas eux qui nous échappent. » | Le réseau se calme ; un seul fil cuivré s'en détache et commence à tourner | Zoom avant lent sur le fil | Le fil s'enroule | — |
 | 4 | 14–21 s | « C'est le geste… nous peser » | Les points s'enroulent en une boucle fermée qui se resserre ; trois pictogrammes minimalistes (écran, assiette, verre) glissent sur la boucle | Rotation qui accélère, montage plus serré (changement de cadrage toutes les ≈ 2 s) | Arrêt net de la rotation | **Le geste avant la pensée.** (17–21 s) |
