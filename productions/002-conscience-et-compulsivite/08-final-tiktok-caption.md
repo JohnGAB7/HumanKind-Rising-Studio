@@ -1,13 +1,17 @@
 # Légende TikTok définitive
 
-Statut : version 2 de Claude, à valider par John.
+Statut : version 3 de Claude (alignée sur la voix off v3), à valider par John.
 
 ---
 
-Nos outils nous font gagner un temps immense. Ce qui nous échappe, ce n'est pas eux : c'est le geste qui revient avant même qu'on l'ait choisi.
+Combien de nos gestes choisissons-nous vraiment ?
 
-Et si, plutôt que de lutter contre lui, on apprenait simplement à le voir naître ?
+Le téléphone n'est pas l'ennemi. Ce qui nous enferme, c'est la compulsion : cet automatisme qui décide à notre place.
+
+Lutter contre soi épuise. Regarder libère.
+
+Et toi, quel geste vas-tu simplement observer aujourd'hui ?
 
 🕊️ HumanKind Rising
 
-#HumanKindRising #Conscience #LibertéIntérieure #Présence #UsageConscient #Compulsivité
+#HumanKindRising #Conscience #Compulsion #LibertéIntérieure #Présence #UsageConscient
