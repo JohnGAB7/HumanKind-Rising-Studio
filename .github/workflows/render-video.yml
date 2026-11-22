@@ -58,6 +58,14 @@ jobs:
           if ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$F" | grep -q .; then echo "ERREUR : piste audio présente"; exit 1; fi
           echo "Aucune piste audio : OK" | tee -a controle.txt
 
+      - name: Version avec voix off (si fournie)
+        run: |
+          V="productions/${{ steps.prod.outputs.name }}/animation/voix-off.mp3"
+          if [ -f "$V" ]; then
+            ffmpeg -y -loglevel error -i "${{ steps.prod.outputs.name }}.mp4" -i "$V" -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -af apad -t 69 -movflags +faststart "${{ steps.prod.outputs.name }}-avec-voix.mp4"
+            ffprobe -v error -show_entries format=duration:stream=codec_type,codec_name -of default=nw=1 "${{ steps.prod.outputs.name }}-avec-voix.mp4" | sed 's/^/avec-voix: /' >> controle.txt
+          fi
+
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.prod.outputs.name }}-video
@@ -71,6 +79,7 @@ jobs:
           D="productions/${{ steps.prod.outputs.name }}/export"
           mkdir -p "$D"
           mv "${{ steps.prod.outputs.name }}.mp4" "$D/"
+          [ -f "${{ steps.prod.outputs.name }}-avec-voix.mp4" ] && mv "${{ steps.prod.outputs.name }}-avec-voix.mp4" "$D/"
           mv controle.txt "$D/controle-technique.txt"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

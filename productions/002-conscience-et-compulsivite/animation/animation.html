@@ -100,6 +100,7 @@ function loadImg(src) {
   imgCache.set(src, p); return p;
 }
 async function prepare(t) {
+  t = warp(t);
   const want = FOOTAGE.filter(c => footAlpha[c.id](t) > 0).map(c => footSrc(c, t));
   for (const k of imgCache.keys()) if (!want.includes(k)) imgCache.delete(k);
   await Promise.all(want.map(loadImg));
@@ -427,8 +428,21 @@ function lessons(t) {
   words("Tout à voir.", CX, 1530, t, 64.3, 66.4, { size: 92, color: C.gold });
 }
 
+// ---------- calage sur la voix off ----------
+// Repères mesurés sur l'enregistrement de John (détection des silences) : [temps voix, temps animation].
+const WARP = [[0, 0], [5.73, 6.33], [15.19, 15.33], [17.04, 17.53], [32.06, 31.95], [33.32, 33.0], [41.66, 41.0],
+  [43.42, 42.2], [49.2, 47.5], [51.54, 48.7], [58.37, 56.4], [59.58, 56.6], [63.9, 63.0], [65.3, 63.4], [68.68, 68.6], [69, 69]];
+function warp(t) {
+  for (let i = 1; i < WARP.length; i++) if (t <= WARP[i][0]) {
+    const [a0, b0] = WARP[i - 1], [a1, b1] = WARP[i];
+    return b0 + (b1 - b0) * (t - a0) / (a1 - a0);
+  }
+  return t;
+}
+
 // ---------- rendu ----------
 function renderFrame(t) {
+  t = warp(t);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.globalAlpha = 1;
   background(t);
