@@ -12,14 +12,14 @@ Claude peut réécrire ou réduire ces formulations pour obtenir une progression
 
 ---
 
-## Version Claude (retenue, à valider)
+## Version Claude (v2, à valider)
 
 Une idée par texte, jamais une copie de la voix off. Cormorant Garamond pour les phrases, Montserrat Light pour les mots-repères.
 
 1. **Un progrès réel.**
-2. **Le geste avant le choix.**
+2. **Le geste avant la pensée.**
 3. **Une impulsion n'est pas un ordre.** *(conservée de ChatGPT)*
-4. Rupture fond noir, schéma : **contrôle → lutte** / **conscience → regard**
-5. **Libre. Pas contrôlé.**
+4. Rupture fond noir, schéma : **résister → tension** / **remarquer → espace**
+5. **Rien à retenir. Tout à voir.**
 
 Signature finale : 🕊️ HumanKind Rising

@@ -1,14 +1,12 @@
 # Légende TikTok définitive
 
-Statut : version Claude, à valider par John.
+Statut : version 2 de Claude, à valider par John.
 
 ---
 
-Autrefois, joindre quelqu'un pouvait prendre des heures. Aujourd'hui, un mot suffit. Le progrès est réel.
+Nos outils nous font gagner un temps immense. Ce qui nous échappe, ce n'est pas eux : c'est le geste qui revient avant même qu'on l'ait choisi.
 
-Ce qui nous enferme n'est pas l'outil, mais le geste qui se répète sans nous.
-
-Et si la liberté ne venait pas du contrôle, mais du regard ?
+Et si, plutôt que de lutter contre lui, on apprenait simplement à le voir naître ?
 
 🕊️ HumanKind Rising
 

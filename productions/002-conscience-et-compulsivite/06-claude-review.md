@@ -48,12 +48,18 @@ Décision : **motion design abstrait** aux couleurs de la marque, construit auto
 
 Correcte mais générique ; « tout interdire » ne correspond pas à la source. Réécrite dans `08-final-tiktok-caption.md`.
 
-## 6. Interprétations à signaler
+## 6. Originalité (correction du 22/11/2026)
 
-- « Ce qui est vu clairement perd peu à peu son emprise » (voix off) est une **interprétation HumanKind Rising**, pas une idée explicite de la source. Elle relie « conscience » et « libération ». À valider par John, ou à retirer.
-- L'anecdote personnelle du locuteur est rendue de façon impersonnelle (« Il y a quelques décennies… ») pour ne pas imiter l'intervenant ni lui attribuer une citation.
+La version 1 de la voix off reprenait l'anecdote de la source, son enchaînement (progrès → compulsion → « le problème n'est pas l'objet » → contrôle corrigé en conscience) et sa formule finale. John l'a relevé à juste titre : c'était une reformulation, pas une création. Cela contrevenait à `COPYRIGHT_AND_ORIGINALITY.md`.
+
+La version 2 ne garde que les idées :
+- les outils sont un progrès réel ;
+- ce qui fait souffrir, c'est la compulsion, pas l'objet ;
+- la lutte contre soi n'est pas la réponse ; voir l'élan libère.
+
+Elle abandonne l'anecdote du locuteur, son ordre d'exposition et ses formules. Elle s'ouvre sur une image propre (une main qui se tend avant la pensée) et suit sa propre progression (geste → lutte → regard → espace → choix). Le texte à l'écran « Libre. Pas contrôlé. », trop proche de la formule source, est remplacé.
 
 ## 7. Points ouverts pour John
 
-- Valider la voix off (`07-final-voiceover.md`) avant enregistrement.
-- Durée : cible proposée 50 s (plafond 60 s confirmé par John). À recaler sur la durée réelle de l'enregistrement si besoin.
+- Valider la voix off v2 (`07-final-voiceover.md`) avant enregistrement.
+- Durée : cible proposée ≈ 52 s (plafond 60 s confirmé par John). À recaler sur la durée réelle de l'enregistrement si besoin.

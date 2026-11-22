@@ -1,43 +1,52 @@
 # Voix off définitive — HumanKind Rising
 
-**Titre de travail : Libre, pas contrôlé**
+**Titre de travail : Le geste redevient un choix**
 
-Statut : version Claude, **à valider par John avant enregistrement**. ≈ 120 mots, ≈ 48–52 s à un rythme posé.
+Statut : version 2 de Claude, **à valider par John avant enregistrement**. ≈ 128 mots, ≈ 50–53 s à un rythme posé.
+
+La version 1 suivait de trop près l'anecdote, l'enchaînement et la formule finale de la source (relevé par John le 22/11/2026). Celle-ci garde uniquement l'idée : les outils ne sont pas le problème, la compulsion l'est, et la conscience libère là où le contrôle oppose. Accroche, images, progression et conclusion sont propres à HumanKind Rising.
 
 ---
 
-Il y a quelques décennies, pour passer cent appels, il fallait une cabine, un combiné noir… et des heures.
+Une main se tend vers l'écran.
 
-Aujourd'hui, un mot suffit.
+Avant même qu'une pensée l'ait décidé.
 
-Notre vie est devenue plus simple. C'est un vrai progrès.
+Nos outils nous ont offert un temps immense. Ils relient, informent, simplifient.
 
-Et pourtant, nous avons trouvé le moyen d'en faire une souffrance.
+Ce ne sont pas eux qui nous échappent.
 
-Le téléphone qu'on reprend sans raison. Manger sans faim. Boire sans soif. Toujours un peu plus.
+C'est le geste.
 
-Le problème n'est pas l'objet.
+Celui qui revient, encore et encore, jusqu'à remplir chaque silence.
 
-C'est la compulsion : ce geste qui se répète avant même que nous l'ayons choisi.
+Devant un écran, une assiette, un verre… le même mouvement.
 
-On croit que la réponse est de se contrôler.
+Et ce qui devait nous soulager finit par nous peser.
 
-Mais le contrôle est encore une lutte.
+Alors on serre les poings. On se promet de résister.
 
-La conscience, elle, ne lutte pas. Elle voit.
+Mais résister, c'est encore être tiré dans deux directions.
 
-Et ce qui est vu clairement perd peu à peu son emprise.
+Il existe une voie plus silencieuse :
 
-Devenir conscient, ce n'est pas se tenir en laisse.
+remarquer l'élan au moment où il naît.
 
-C'est se libérer.
+Le voir, sans le suivre, sans le combattre.
+
+Dans cet espace, quelque chose se dénoue.
+
+Le geste redevient un choix.
+
+Ce n'est pas de la retenue.
+
+C'est de la liberté.
 
 ---
 
 ## Notes d'enregistrement
 
-- Laisser une respiration nette après « des heures » et après « un mot suffit » (contraste lent / immédiat).
-- « Et pourtant » est le pivot : ralentir.
-- Silence d'environ 1 s avant « La conscience, elle, ne lutte pas. » (correspond à la rupture fond noir).
-- Dernière phrase posée, sans emphase.
-- La phrase « Et ce qui est vu clairement… » est une interprétation (voir revue §6) : peut être retirée sans casser la structure (gain ≈ 3 s).
+- Laisser un temps après « l'ait décidé » : l'accroche doit rester en suspens.
+- « C'est le geste. » est le pivot : phrase courte, posée.
+- Silence d'environ 1 s avant « Il existe une voie plus silencieuse ».
+- Dernière phrase sans emphase.
