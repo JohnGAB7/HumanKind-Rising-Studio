@@ -18,7 +18,7 @@ const SCENES = [
   { id: "vagues", start: 23.8, end: 32.2, queries: ["stormy sea waves", "rough ocean waves", "crashing waves"] },
   { id: "brume", start: 43.0, end: 49.6, queries: ["misty lake sunrise", "fog lake morning", "sunrise mist forest"] },
   { id: "lac", start: 48.2, end: 57.4, queries: ["calm lake reflection", "still water reflection mountains", "forest sunlight rays"] },
-  { id: "ocean", start: 56.3, end: 69.0, queries: ["ocean horizon sunrise", "calm sea sunrise", "sea horizon golden hour"] },
+  { id: "ocean", start: 56.3, end: 72.0, queries: ["ocean horizon sunrise", "calm sea sunrise", "sea horizon golden hour"] },
 ];
 
 // Résultats normalisés : { id, duration, url, author, author_url, file: { link, width, height } }

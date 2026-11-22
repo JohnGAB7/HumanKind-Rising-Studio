@@ -1,6 +1,6 @@
 # Rapport de production
 
-- Durée : **69 s**, calée sur l'enregistrement ElevenLabs de la voix off v3 (validée par John le 22/11/2026).
+- Durée : **72 s** (69 s de voix + ≈ 3 s de visuel final, consigne de John), calée sur l'enregistrement ElevenLabs de la voix off v3 (validée par John le 22/11/2026).
 - Format : vertical 9:16, 1080 × 1920, 30 i/s.
 - Export : MP4 H.264, yuv420p.
 - Audio : aucune piste audio (vérifiée automatiquement par le workflow).

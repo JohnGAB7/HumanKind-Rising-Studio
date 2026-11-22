@@ -17,7 +17,7 @@
 // HumanKind Rising — 002 « Conscience et compulsivité »
 // Animation déterministe : renderFrame(t) dessine l'image à l'instant t (secondes).
 // Durée 69 s, calée sur la voix off v3 enregistrée par John (1 min 09).
-const W = 1080, H = 1920, CX = 540, CY = 960, DURATION = 69;
+const W = 1080, H = 1920, CX = 540, CY = 960, DURATION = 72;  // 68,7 s de voix + ≈ 3 s de visuel final
 const C = {
   deep: [8, 24, 48], night: [4, 10, 22], black: [0, 0, 0],
   turq: [64, 200, 196], turqSoft: [120, 220, 214],
@@ -91,7 +91,7 @@ const imgCache = new Map();
 const footAlpha = {
   oiseaux: t => env(t, 5.8, 15.8, 1.4, 1.0), tourbillon: t => env(t, 15.0, 24.8, 0.8, 0.8),
   vagues: t => env(t, 23.8, 32.15, 0.8, 0.15), brume: t => env(t, 43.0, 49.6, 3.0, 1.0),
-  lac: t => env(t, 48.2, 57.4, 1.0, 1.2), ocean: t => env(t, 56.3, 69.5, 1.6, 0.01),
+  lac: t => env(t, 48.2, 57.4, 1.0, 1.2), ocean: t => env(t, 56.3, 80, 1.6, 0.01),
 };
 function footSrc(c, t) { return c.still ? `footage/${c.id}/still.jpg` : `footage/${c.id}/${String(clamp(Math.floor((t - c.start) * 30), 0, c.frames - 1) + 1).padStart(5, "0")}.jpg`; }
 function loadImg(src) {
@@ -431,7 +431,7 @@ function lessons(t) {
 // ---------- calage sur la voix off ----------
 // Repères mesurés sur l'enregistrement de John (détection des silences) : [temps voix, temps animation].
 const WARP = [[0, 0], [5.73, 6.33], [15.19, 15.33], [17.04, 17.53], [32.06, 31.95], [33.32, 33.0], [41.66, 41.0],
-  [43.42, 42.2], [49.2, 47.5], [51.54, 48.7], [58.37, 56.4], [59.58, 56.6], [63.9, 63.0], [65.3, 63.4], [68.68, 68.6], [69, 69]];
+  [43.42, 42.2], [49.2, 47.5], [51.54, 48.7], [58.37, 56.4], [59.58, 56.6], [63.9, 63.0], [65.3, 63.4], [68.68, 68.6], [72, 70.2]];
 function warp(t) {
   for (let i = 1; i < WARP.length; i++) if (t <= WARP[i][0]) {
     const [a0, b0] = WARP[i - 1], [a1, b1] = WARP[i];
