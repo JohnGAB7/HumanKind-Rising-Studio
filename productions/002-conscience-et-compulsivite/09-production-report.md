@@ -12,3 +12,4 @@
 - Polices : Cormorant Garamond et Montserrat (Google Fonts, licence SIL OFL), incluses dans `animation/fonts/`.
 - Contrôles techniques : voir `controle.txt` dans l'artefact du run.
 - Validation éditoriale finale : John (synchronisation avec la voix dans Canva).
+- Version avec voix : `export/002-conscience-et-compulsivite-avec-voix.mp4` (AAC), produite à la demande de John à partir de son enregistrement ElevenLabs. L'animation est calée sur les silences mesurés de cet enregistrement. La version silencieuse reste la référence pour Canva.
