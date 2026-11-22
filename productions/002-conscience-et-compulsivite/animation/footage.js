@@ -1,12 +1,12 @@
 // Récupère les plans de nature sur Pixabay (ou Pexels), banques libres de droits sans attribution obligatoire,
 // les recadre en 9:16, les étalonne et les découpe en images JPEG pour animation.html.
-// Usage : PIXABAY_API_KEY=... node footage.js   (ou PEXELS_API_KEY=...)
+// Priorité aux images fixes déposées dans visuels/<scène>.png|jpg (animées dans animation.html).
+// Usage : node footage.js   (PIXABAY_API_KEY ou PEXELS_API_KEY facultatives)
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
 
 const PIXABAY = process.env.PIXABAY_API_KEY, PEXELS = process.env.PEXELS_API_KEY;
-if (!PIXABAY && !PEXELS) { console.log("Aucune clé (PIXABAY_API_KEY ou PEXELS_API_KEY) : rendu sans plans de nature."); process.exit(0); }
 const PROVIDER = PIXABAY ? "Pixabay" : "Pexels";
 const ROOT = path.join(__dirname, "footage");
 const FPS = 30;
@@ -48,6 +48,17 @@ async function search(q) {
   const used = new Set(), manifest = [];
   for (const s of SCENES) {
     const need = s.end - s.start;
+    const still = ["png", "jpg", "jpeg", "webp"].map(e => path.join(__dirname, "visuels", `${s.id}.${e}`)).find(f => fs.existsSync(f));
+    if (still) {
+      const dir = path.join(ROOT, s.id); fs.mkdirSync(dir, { recursive: true });
+      execFileSync("ffmpeg", ["-y", "-loglevel", "error", "-i", still, "-vf",
+        "scale=1188:2112:force_original_aspect_ratio=increase,crop=1188:2112,eq=saturation=0.92", "-q:v", "2", path.join(dir, "still.jpg")]);
+      manifest.push({ id: s.id, start: s.start, end: s.end, still: true });
+      s.credit = { scene: s.id, source: "Image fournie (visuels/)", fichier: path.basename(still) };
+      console.log(`${s.id} : image fixe ${path.basename(still)}`);
+      continue;
+    }
+    if (!PIXABAY && !PEXELS) { console.log(`${s.id} : ni image ni clé, scène laissée en motion design.`); continue; }
     let chosen = null;
     for (const q of s.queries) {
       const vids = await search(q);

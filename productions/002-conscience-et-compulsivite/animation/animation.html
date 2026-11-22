@@ -86,14 +86,14 @@ const footAlpha = {
   vagues: t => env(t, 23.8, 32.15, 0.8, 0.15), brume: t => env(t, 43.0, 49.6, 3.0, 1.0),
   lac: t => env(t, 48.2, 57.4, 1.0, 1.2), ocean: t => env(t, 56.3, 69.5, 1.6, 0.01),
 };
-function footFrame(c, t) { return clamp(Math.floor((t - c.start) * 30), 0, c.frames - 1) + 1; }
+function footSrc(c, t) { return c.still ? `footage/${c.id}/still.jpg` : `footage/${c.id}/${String(clamp(Math.floor((t - c.start) * 30), 0, c.frames - 1) + 1).padStart(5, "0")}.jpg`; }
 function loadImg(src) {
   if (imgCache.has(src)) return imgCache.get(src);
   const p = new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; });
   imgCache.set(src, p); return p;
 }
 async function prepare(t) {
-  const want = FOOTAGE.filter(c => footAlpha[c.id](t) > 0).map(c => `footage/${c.id}/${String(footFrame(c, t)).padStart(5, "0")}.jpg`);
+  const want = FOOTAGE.filter(c => footAlpha[c.id](t) > 0).map(c => footSrc(c, t));
   for (const k of imgCache.keys()) if (!want.includes(k)) imgCache.delete(k);
   await Promise.all(want.map(loadImg));
   window._imgs = Object.fromEntries(await Promise.all(want.map(async k => [k, await imgCache.get(k)])));
@@ -103,11 +103,14 @@ function drawFootage(t) {
   let cover = 0;
   FOOTAGE.forEach(c => {
     const a = footAlpha[c.id](t);
-    const im = a > 0 && window._imgs && window._imgs[`footage/${c.id}/${String(footFrame(c, t)).padStart(5, "0")}.jpg`];
+    const im = a > 0 && window._imgs && window._imgs[footSrc(c, t)];
     if (!im) return;
-    const z = 1.04 + 0.04 * clamp((t - c.start) / (c.end - c.start));   // zoom lent
+    const k = clamp((t - c.start) / (c.end - c.start));
+    // vidéo : zoom lent ; image fixe : zoom plus ample et dérive (effet Ken Burns) pour qu'elle vive
+    const z = c.still ? 1.06 + 0.16 * easeIO(k) : 1.04 + 0.04 * k;
+    const dx = c.still ? Math.sin(k * 3.1 + c.start) * 40 : 0, dy = c.still ? lerp(30, -30, k) : 0;
     ctx.save(); ctx.globalAlpha = a;
-    ctx.translate(CX, CY); ctx.scale(z, z); ctx.drawImage(im, -W / 2, -H / 2, W, H); ctx.restore();
+    ctx.translate(CX + dx, CY + dy); ctx.scale(z, z); ctx.drawImage(im, -W / 2 * 1.1, -H / 2 * 1.1, W * 1.1, H * 1.1); ctx.restore();
     cover = Math.max(cover, a);
   });
   // voile bleu profond pour l'unité de la palette et la lisibilité
