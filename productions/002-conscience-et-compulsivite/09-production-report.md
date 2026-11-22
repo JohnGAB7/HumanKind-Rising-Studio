@@ -8,7 +8,7 @@
 - Voix off : `07-final-voiceover.md` (v3).
 - Storyboard : `10-storyboard.md`.
 - Animation : `animation/animation.html` (motion design en code, aperçu possible dans un navigateur), rendue par `animation/render.js`.
-- Rendu : GitHub Actions, workflow « Rendu vidéo (MP4 silencieux) ». Le MP4 est disponible en artefact du run (30 jours).
+- Rendu : GitHub Actions, workflow « Rendu vidéo (MP4 silencieux) ». Le MP4 est déposé dans `export/` à chaque rendu.
 - Polices : Cormorant Garamond et Montserrat (Google Fonts, licence SIL OFL), incluses dans `animation/fonts/`.
 - Contrôles techniques : voir `controle.txt` dans l'artefact du run.
 - Validation éditoriale finale : John (synchronisation avec la voix dans Canva).

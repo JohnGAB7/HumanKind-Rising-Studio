@@ -11,6 +11,9 @@ on:
     paths:
       - "productions/*/animation/**"
 
+permissions:
+  contents: write
+
 jobs:
   render:
     runs-on: ubuntu-latest
@@ -56,3 +59,15 @@ jobs:
             ${{ steps.prod.outputs.name }}.mp4
             controle.txt
           retention-days: 30
+
+      - name: Déposer le MP4 dans le dossier de la production
+        run: |
+          D="productions/${{ steps.prod.outputs.name }}/export"
+          mkdir -p "$D"
+          mv "${{ steps.prod.outputs.name }}.mp4" "$D/"
+          mv controle.txt "$D/controle-technique.txt"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$D"
+          git commit -m "Rendu vidéo ${{ steps.prod.outputs.name }} [skip ci]" || exit 0
+          git push origin HEAD:${{ github.ref_name }}
