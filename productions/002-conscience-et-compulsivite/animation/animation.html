@@ -53,6 +53,13 @@ function text(str, x, y, { font = "Cormorant", size = 88, style = "normal", weig
   ctx.font = `${style} ${weight} ${size}px "${font}"`;
   ctx.letterSpacing = spacing + "px";
   ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  if (FOOTAGE.length) {   // voile sombre derrière le texte pour la lisibilité sur image
+    const w = ctx.measureText(str).width * 0.75 + size;
+    ctx.save(); ctx.translate(x, y); ctx.scale(w / size, 1.1);
+    const vg = ctx.createRadialGradient(0, 0, 0, 0, 0, size);
+    vg.addColorStop(0, `rgba(4,10,22,${0.42 * alpha})`); vg.addColorStop(1, "rgba(4,10,22,0)");
+    ctx.fillStyle = vg; ctx.fillRect(-size, -size, size * 2, size * 2); ctx.restore();
+  }
   ctx.shadowColor = "rgba(0,0,0,0.55)"; ctx.shadowBlur = glow;
   ctx.fillStyle = rgba(color, alpha);
   ctx.fillText(str, x + spacing / 2, y + (1 - alpha) * rise);
@@ -265,7 +272,7 @@ function loopAngle(t) {
 function sceneLoop(t) {
   const aCompul = ss(16.4, 17.6, t) * (1 - ss(31.8, 32.1, t));
   const aBack = ss(47.6, 50, t);
-  const a = Math.max(aCompul, aBack);
+  const a = Math.max(aCompul, aBack) * (hasFootage("ocean") ? 1 - ss(61, 64, t) : 1);
   if (a <= 0) return;
   const tighten = ss(17.4, 31.5, t);
   const relax = ss(48, 56, t);

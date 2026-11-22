@@ -52,7 +52,7 @@ async function search(q) {
     if (still) {
       const dir = path.join(ROOT, s.id); fs.mkdirSync(dir, { recursive: true });
       execFileSync("ffmpeg", ["-y", "-loglevel", "error", "-i", still, "-vf",
-        "scale=1188:2112:force_original_aspect_ratio=increase,crop=1188:2112,eq=saturation=0.92", "-q:v", "2", path.join(dir, "still.jpg")]);
+        "scale=1188:2112:force_original_aspect_ratio=increase:flags=lanczos,crop=1188:2112,eq=saturation=0.92", "-q:v", "2", path.join(dir, "still.jpg")]);
       manifest.push({ id: s.id, start: s.start, end: s.end, still: true });
       s.credit = { scene: s.id, source: "Image fournie (visuels/)", fichier: path.basename(still) };
       console.log(`${s.id} : image fixe ${path.basename(still)}`);
