@@ -1,12 +1,13 @@
-// Récupère les plans de nature sur Pexels (licence Pexels : usage libre, sans attribution obligatoire),
-// les étalonne et les découpe en images JPEG pour animation.html.
-// Usage : PEXELS_API_KEY=... node footage.js
+// Récupère les plans de nature sur Pixabay (ou Pexels), banques libres de droits sans attribution obligatoire,
+// les recadre en 9:16, les étalonne et les découpe en images JPEG pour animation.html.
+// Usage : PIXABAY_API_KEY=... node footage.js   (ou PEXELS_API_KEY=...)
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
 
-const KEY = process.env.PEXELS_API_KEY;
-if (!KEY) { console.log("Pas de PEXELS_API_KEY : rendu sans plans de nature."); process.exit(0); }
+const PIXABAY = process.env.PIXABAY_API_KEY, PEXELS = process.env.PEXELS_API_KEY;
+if (!PIXABAY && !PEXELS) { console.log("Aucune clé (PIXABAY_API_KEY ou PEXELS_API_KEY) : rendu sans plans de nature."); process.exit(0); }
+const PROVIDER = PIXABAY ? "Pixabay" : "Pexels";
 const ROOT = path.join(__dirname, "footage");
 const FPS = 30;
 
@@ -20,17 +21,26 @@ const SCENES = [
   { id: "ocean", start: 56.3, end: 69.0, queries: ["ocean horizon sunrise", "calm sea sunrise", "sea horizon golden hour"] },
 ];
 
+// Résultats normalisés : { id, duration, url, author, author_url, file: { link, width, height } }
 async function search(q) {
-  const u = `https://api.pexels.com/videos/search?query=${encodeURIComponent(q)}&orientation=portrait&per_page=20`;
-  const r = await fetch(u, { headers: { Authorization: KEY } });
+  if (PIXABAY) {
+    const r = await fetch(`https://pixabay.com/api/videos/?key=${PIXABAY}&q=${encodeURIComponent(q)}&per_page=30&safesearch=true`);
+    if (!r.ok) throw new Error(`Pixabay ${r.status} pour « ${q} »`);
+    return ((await r.json()).hits || []).map(h => {
+      const files = Object.values(h.videos || {}).filter(f => f && f.url && Math.min(f.width, f.height) >= 1080);
+      // portrait d'abord, sinon la plus grande définition (recadrée au centre)
+      files.sort((a, b) => (b.height > b.width) - (a.height > a.width) || b.width * b.height - a.width * a.height);
+      return { id: h.id, duration: h.duration, url: h.pageURL, author: h.user, author_url: `https://pixabay.com/users/${h.user}-${h.user_id}/`,
+               file: files[0] && { link: files[0].url, width: files[0].width, height: files[0].height } };
+    });
+  }
+  const r = await fetch(`https://api.pexels.com/videos/search?query=${encodeURIComponent(q)}&orientation=portrait&per_page=20`, { headers: { Authorization: PEXELS } });
   if (!r.ok) throw new Error(`Pexels ${r.status} pour « ${q} »`);
-  return (await r.json()).videos || [];
-}
-
-function pickFile(v) {
-  return (v.video_files || [])
-    .filter(f => f.file_type === "video/mp4" && f.height > f.width && f.height >= 1280)
-    .sort((a, b) => Math.abs(a.height - 1920) - Math.abs(b.height - 1920))[0];
+  return ((await r.json()).videos || []).map(v => {
+    const f = (v.video_files || []).filter(f => f.file_type === "video/mp4" && f.height > f.width && f.height >= 1280)
+      .sort((a, b) => Math.abs(a.height - 1920) - Math.abs(b.height - 1920))[0];
+    return { id: v.id, duration: v.duration, url: v.url, author: v.user.name, author_url: v.user.url, file: f && { link: f.link, width: f.width, height: f.height } };
+  });
 }
 
 (async () => {
@@ -42,12 +52,12 @@ function pickFile(v) {
     for (const q of s.queries) {
       const vids = await search(q);
       // plans assez longs d'abord, puis les autres (bouclés)
-      const ranked = vids.filter(v => !used.has(v.id) && pickFile(v)).sort((a, b) => (b.duration >= need) - (a.duration >= need));
+      const ranked = vids.filter(v => !used.has(v.id) && v.file).sort((a, b) => (b.duration >= need) - (a.duration >= need));
       if (ranked.length) { chosen = { v: ranked[0], q }; break; }
     }
     if (!chosen) { console.log(`Aucun plan pour ${s.id}, scène laissée en motion design.`); continue; }
     const { v, q } = chosen; used.add(v.id);
-    const f = pickFile(v);
+    const f = v.file;
     const src = path.join(ROOT, `${s.id}-source.mp4`);
     const buf = Buffer.from(await (await fetch(f.link)).arrayBuffer());
     fs.writeFileSync(src, buf);
@@ -63,10 +73,11 @@ function pickFile(v) {
     execFileSync("ffmpeg", ["-y", "-loglevel", "error", "-stream_loop", "-1", "-i", src, "-t", need.toFixed(2), "-vf", vf, "-q:v", "3", path.join(dir, "%05d.jpg")]);
     const frames = fs.readdirSync(dir).filter(n => n.endsWith(".jpg")).length;
     manifest.push({ id: s.id, start: s.start, end: s.end, frames });
-    console.log(`${s.id} : vidéo Pexels ${v.id} (${v.user.name}), ${frames} images`);
-    s.credit = { scene: s.id, requete: q, pexels_id: v.id, url: v.url, auteur: v.user.name, auteur_url: v.user.url, licence: "Pexels License (https://www.pexels.com/license/)" };
+    console.log(`${s.id} : vidéo ${PROVIDER} ${v.id} (${v.author}), ${frames} images`);
+    s.credit = { scene: s.id, source: PROVIDER, requete: q, id: v.id, url: v.url, auteur: v.author, auteur_url: v.author_url,
+      licence: PIXABAY ? "Pixabay Content License (https://pixabay.com/service/license-summary/)" : "Pexels License (https://www.pexels.com/license/)" };
   }
   fs.writeFileSync(path.join(ROOT, "manifest.json"), JSON.stringify(manifest, null, 2));
   fs.mkdirSync(path.join(__dirname, "..", "export"), { recursive: true });
-  fs.writeFileSync(path.join(__dirname, "..", "export", "credits-pexels.json"), JSON.stringify(SCENES.filter(s => s.credit).map(s => s.credit), null, 2));
+  fs.writeFileSync(path.join(__dirname, "..", "export", "credits-videos.json"), JSON.stringify(SCENES.filter(s => s.credit).map(s => s.credit), null, 2));
 })().catch(e => { console.error(e); process.exit(1); });

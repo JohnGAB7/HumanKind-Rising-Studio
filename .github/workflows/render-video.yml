@@ -42,8 +42,9 @@ jobs:
           npm install playwright@1.48.2
           npx playwright install --with-deps chromium
 
-      - name: Récupérer les plans de nature (Pexels)
+      - name: Récupérer les plans de nature (Pixabay ou Pexels)
         env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: node productions/${{ steps.prod.outputs.name }}/animation/footage.js
 
