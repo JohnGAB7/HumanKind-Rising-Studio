@@ -78,6 +78,44 @@ function words(str, x, y, t, t0, t1, opts = {}) {
   });
 }
 
+// ---------- plans de nature (Pexels), facultatifs ----------
+let FOOTAGE = [];
+const imgCache = new Map();
+const footAlpha = {
+  oiseaux: t => env(t, 5.8, 15.8, 1.4, 1.0), tourbillon: t => env(t, 15.0, 24.8, 0.8, 0.8),
+  vagues: t => env(t, 23.8, 32.15, 0.8, 0.15), brume: t => env(t, 43.0, 49.6, 3.0, 1.0),
+  lac: t => env(t, 48.2, 57.4, 1.0, 1.2), ocean: t => env(t, 56.3, 69.5, 1.6, 0.01),
+};
+function footFrame(c, t) { return clamp(Math.floor((t - c.start) * 30), 0, c.frames - 1) + 1; }
+function loadImg(src) {
+  if (imgCache.has(src)) return imgCache.get(src);
+  const p = new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; });
+  imgCache.set(src, p); return p;
+}
+async function prepare(t) {
+  const want = FOOTAGE.filter(c => footAlpha[c.id](t) > 0).map(c => `footage/${c.id}/${String(footFrame(c, t)).padStart(5, "0")}.jpg`);
+  for (const k of imgCache.keys()) if (!want.includes(k)) imgCache.delete(k);
+  await Promise.all(want.map(loadImg));
+  window._imgs = Object.fromEntries(await Promise.all(want.map(async k => [k, await imgCache.get(k)])));
+}
+function drawFootage(t) {
+  if (!FOOTAGE.length) return 0;
+  let cover = 0;
+  FOOTAGE.forEach(c => {
+    const a = footAlpha[c.id](t);
+    const im = a > 0 && window._imgs && window._imgs[`footage/${c.id}/${String(footFrame(c, t)).padStart(5, "0")}.jpg`];
+    if (!im) return;
+    const z = 1.04 + 0.04 * clamp((t - c.start) / (c.end - c.start));   // zoom lent
+    ctx.save(); ctx.globalAlpha = a;
+    ctx.translate(CX, CY); ctx.scale(z, z); ctx.drawImage(im, -W / 2, -H / 2, W, H); ctx.restore();
+    cover = Math.max(cover, a);
+  });
+  // voile bleu profond pour l'unité de la palette et la lisibilité
+  ctx.fillStyle = rgba(C.night, 0.38 * cover); ctx.fillRect(0, 0, W, H);
+  return cover;
+}
+const hasFootage = id => FOOTAGE.some(c => c.id === id);
+
 // ---------- éléments ----------
 function background(t) {
   // nuit bleue → noir (rupture) → bleu → aube
@@ -179,7 +217,7 @@ function sceneNetwork(t) {
     const lx = CX + Math.cos(n.a + t * 0.6) * 330, ly = CY + Math.sin(n.a + t * 0.6) * 330;
     return [lerp(x, lx, collapse), lerp(y, ly, collapse)];
   });
-  ctx.save(); ctx.globalAlpha = a;
+  ctx.save(); ctx.globalAlpha = a * (hasFootage("oiseaux") ? 0.55 : 1);
   ctx.lineWidth = 1.4;
   for (let i = 0; i < NN; i++) for (let j = i + 1; j < NN; j++) {
     const dx = pts[i][0] - pts[j][0], dy = pts[i][1] - pts[j][1], d = Math.hypot(dx, dy);
@@ -314,6 +352,7 @@ function sceneHalo(t) {
 
 // Plan 9 — horizon, reflets, colombe
 function sceneHorizon(t) {
+  if (hasFootage("ocean")) return;
   const a = ss(60, 63.5, t);
   if (a <= 0) return;
   const hy = 1180;
@@ -383,6 +422,7 @@ function renderFrame(t) {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.globalAlpha = 1;
   background(t);
+  drawFootage(t);
   ctx.save();
   camera(t);
   sceneHorizon(t);
@@ -409,16 +449,17 @@ function renderFrame(t) {
 
 window.DURATION = DURATION;
 window.renderFrame = renderFrame;
-window.ready = Promise.all([
+window.prepare = prepare;
+window.ready = fetch("footage/manifest.json").then(r => r.ok ? r.json() : []).catch(() => []).then(m => { FOOTAGE = m; }).then(() => Promise.all([
   document.fonts.load('400 80px "Cormorant"'),
   document.fonts.load('italic 400 80px "Cormorant"'),
   document.fonts.load('300 40px "Montserrat"'),
-]).then(() => { renderFrame(0); return true; });
+])).then(() => { renderFrame(0); return true; });
 
 // Aperçu en navigateur : lecture en boucle (ignoré pendant le rendu)
 if (!location.search.includes("render")) {
   const t0 = performance.now();
-  window.ready.then(() => { const loop = () => { renderFrame(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); }; loop(); });
+  window.ready.then(() => { const loop = async () => { const t = ((performance.now() - t0) / 1000) % DURATION; await prepare(t); renderFrame(t); requestAnimationFrame(loop); }; loop(); });
 }
 </script>
 </body>

@@ -42,6 +42,11 @@ jobs:
           npm install playwright@1.48.2
           npx playwright install --with-deps chromium
 
+      - name: Récupérer les plans de nature (Pexels)
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: node productions/${{ steps.prod.outputs.name }}/animation/footage.js
+
       - name: Rendre la vidéo
         run: node productions/${{ steps.prod.outputs.name }}/animation/render.js --workers 4 --out "$PWD/${{ steps.prod.outputs.name }}.mp4" --frames-dir "$RUNNER_TEMP/frames"
 

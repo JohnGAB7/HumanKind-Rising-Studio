@@ -15,7 +15,7 @@ const PREVIEW = opt("preview", null);
 const ROOT = __dirname;
 const FRAMES = path.resolve(opt("frames-dir", path.join(ROOT, "frames")));
 
-const types = { ".html": "text/html", ".woff2": "font/woff2", ".js": "text/javascript" };
+const types = { ".html": "text/html", ".woff2": "font/woff2", ".js": "text/javascript", ".json": "application/json", ".jpg": "image/jpeg" };
 const server = http.createServer((req, res) => {
   const p = path.join(ROOT, decodeURIComponent(req.url.split("?")[0]));
   if (!p.startsWith(ROOT) || !fs.existsSync(p)) { res.writeHead(404); return res.end(); }
@@ -35,7 +35,7 @@ const server = http.createServer((req, res) => {
     await page.evaluate(() => window.ready);
     return page;
   };
-  const grab = (page, t) => page.evaluate(t => { window.renderFrame(t); return document.getElementById("c").toDataURL("image/png"); }, t);
+  const grab = (page, t) => page.evaluate(async t => { await window.prepare(t); window.renderFrame(t); return document.getElementById("c").toDataURL("image/png"); }, t);
   const save = (file, data) => fs.writeFileSync(file, Buffer.from(data.split(",")[1], "base64"));
 
   if (PREVIEW) {
