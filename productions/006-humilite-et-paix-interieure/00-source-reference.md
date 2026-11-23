@@ -1,0 +1,7 @@
+# Source originale
+
+Langue : anglais
+
+If you are weak nothing. It doesn't matter what nonsense you do. As you empower yourself, it becomes very, very important how consciously you function. Otherwise you'll be damaging to people around you and you'll be damaging to yourself. Next three days, I want you to do this, that you will not generate one moment of irritation, anger, agitation, nothing. So one simple device is, everybody here is better than you. Everything in the universe is better than you. Because everything in the universe is beyond your intelligence, isn't it? Even a single atom, we cannot grasp in its entirety. So everything in the universe seems to be smarter than us because we can't figure it. So if you walk like this for three days, physically you don't have to walk like this. Within you, you just recognize everything here in this universe is way more complex than you are, way more intelligent than you are. You bring this, you will see your mind will become very flexible. If your mind becomes very flexible, you will see body will function wonderfully well. Because right now, human mind is causing enormous damage to itself and to the body that houses it. If you don't keep the body well, the mind cannot function well. If the mind doesn't function well, body cannot be well. So to be in a constant state of pleasantness is most important.
+
+Note : texte fourni par John, conservé comme référence source.
