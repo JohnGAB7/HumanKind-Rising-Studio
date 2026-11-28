@@ -1,12 +1,10 @@
-# Référence de la source — Production 004
+# Texte original — Production 004 : L'amour sans idéalisation
 
-## Source originale
-Message fourni par John en anglais sur l'absence de partenaire parfait, l'engagement dans une relation et la nécessité de commencer par s'interroger sur sa propre capacité à être un bon partenaire.
+**Langue source :** anglais  
+**Provenance :** message transmis par John dans la conversation de travail.
 
-## Idée centrale
-Une relation ne devient pas belle parce que l'on aurait trouvé une personne parfaite ; elle peut le devenir lorsque deux personnes réelles s'y investissent.
+> I don't want to take away all the romance from your life. But let me tell you this. There is no right person on this planet. ... First thing is to see whether I am the right person. Am I the right person? If you understand, you have your nonsense, they have their nonsense. You can adjust nonsense, nonsense.
 
-## Nuance à préserver
-Ne pas transformer cette idée en injonction à rester dans une relation irrespectueuse ou nuisible. Accepter les imperfections n'implique jamais de tolérer la violence, le mépris, la manipulation ou l'effacement de ses limites.
+**Limite de transcription :** une partie du texte intermédiaire n'a pas été retrouvée dans le contexte disponible. Les points de suspension signalent une omission dans la transcription récupérée; ils ne font pas partie du message original.
 
-La transcription intégrale est conservée dans la base Notion privée HumanKind Rising — Enseignements.
+**Nuance éditoriale :** accepter les imperfections ne signifie pas tolérer le mépris, la manipulation, la violence ou l'effacement de ses limites.
