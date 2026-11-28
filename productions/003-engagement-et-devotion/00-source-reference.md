@@ -1,12 +1,10 @@
-# Référence de la source — Production 003
+# Texte original — Production 003 : L'engagement total
 
-## Source originale
-Message fourni par John en anglais sur l'implication totale, la dévotion et la liberté vis-à-vis des attentes.
+**Langue source :** anglais  
+**Provenance :** message transmis par John dans la conversation de travail.
 
-## Thème
-L'épanouissement par un engagement entier et libre, sans transformer chaque action en transaction.
+> If you're seeking fulfillment of life, then it needs involvement. Devotion means just unquestioned, unbridled involvement, not holding back anything. Will you respond to any human being totally without holding back anything unless you have a deep sense of love or devotion towards that person? ... If you just become free from that, your life is a blessed life.
 
-## Nuance à préserver
-La dévotion décrite dans la source n'est pas une obligation de s'épuiser, de s'effacer ou de tolérer l'exploitation. L'adaptation HumanKind Rising doit distinguer l'engagement profond de l'abnégation sans limites.
+**Limite de transcription :** une partie du texte intermédiaire n'a pas été retrouvée dans le contexte disponible. Les points de suspension signalent une omission dans la transcription récupérée; ils ne font pas partie du message original.
 
-La transcription intégrale est conservée dans la base Notion privée HumanKind Rising — Enseignements.
+**Nuance éditoriale :** distinguer l'engagement profond de l'épuisement, de l'effacement de soi ou de l'exploitation.
