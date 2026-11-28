@@ -1,0 +1,88 @@
+name: Rendu vidéo (MP4 silencieux)
+
+on:
+  workflow_dispatch:
+    inputs:
+      production:
+        description: "Dossier de la production (ex. 002-conscience-et-compulsivite)"
+        required: true
+        default: "002-conscience-et-compulsivite"
+  push:
+    paths:
+      - "productions/*/animation/**"
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Choisir la production
+        id: prod
+        run: |
+          P="${{ github.event.inputs.production }}"
+          if [ -z "$P" ]; then
+            P=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} 2>/dev/null | grep -oP '^productions/\K[^/]+(?=/animation/)' | head -1)
+          fi
+          [ -z "$P" ] && P="002-conscience-et-compulsivite"
+          echo "name=$P" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Installer Playwright, Chromium et ffmpeg
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          npm init -y >/dev/null
+          npm install playwright@1.48.2
+          npx playwright install --with-deps chromium
+
+      - name: Récupérer les plans de nature (Pixabay ou Pexels)
+        env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: node productions/${{ steps.prod.outputs.name }}/animation/footage.js
+
+      - name: Rendre la vidéo
+        run: node productions/${{ steps.prod.outputs.name }}/animation/render.js --workers 4 --out "$PWD/${{ steps.prod.outputs.name }}.mp4" --frames-dir "$RUNNER_TEMP/frames"
+
+      - name: Contrôle technique
+        run: |
+          F="${{ steps.prod.outputs.name }}.mp4"
+          ffprobe -v error -show_entries format=duration:stream=codec_type,codec_name,width,height,r_frame_rate,pix_fmt -of default=nw=1 "$F" | tee controle.txt
+          if ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$F" | grep -q .; then echo "ERREUR : piste audio présente"; exit 1; fi
+          echo "Aucune piste audio : OK" | tee -a controle.txt
+
+      - name: Version avec voix off (si fournie)
+        run: |
+          V="productions/${{ steps.prod.outputs.name }}/animation/voix-off.mp3"
+          if [ -f "$V" ]; then
+            ffmpeg -y -loglevel error -i "${{ steps.prod.outputs.name }}.mp4" -i "$V" -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -af apad -shortest -movflags +faststart "${{ steps.prod.outputs.name }}-avec-voix.mp4"
+            ffprobe -v error -show_entries format=duration:stream=codec_type,codec_name -of default=nw=1 "${{ steps.prod.outputs.name }}-avec-voix.mp4" | sed 's/^/avec-voix: /' >> controle.txt
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.prod.outputs.name }}-video
+          path: |
+            ${{ steps.prod.outputs.name }}.mp4
+            controle.txt
+          retention-days: 30
+
+      - name: Déposer le MP4 dans le dossier de la production
+        run: |
+          D="productions/${{ steps.prod.outputs.name }}/export"
+          mkdir -p "$D"
+          mv "${{ steps.prod.outputs.name }}.mp4" "$D/"
+          [ -f "${{ steps.prod.outputs.name }}-avec-voix.mp4" ] && mv "${{ steps.prod.outputs.name }}-avec-voix.mp4" "$D/"
+          mv controle.txt "$D/controle-technique.txt"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$D"
+          git commit -m "Rendu vidéo ${{ steps.prod.outputs.name }} [skip ci]" || exit 0
+          git push origin HEAD:${{ github.ref_name }}

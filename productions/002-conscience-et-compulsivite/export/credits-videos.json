@@ -1,0 +1,32 @@
+[
+  {
+    "scene": "oiseaux",
+    "source": "Image fournie (visuels/)",
+    "fichier": "oiseaux.jpg"
+  },
+  {
+    "scene": "tourbillon",
+    "source": "Image fournie (visuels/)",
+    "fichier": "tourbillon.jpg"
+  },
+  {
+    "scene": "vagues",
+    "source": "Image fournie (visuels/)",
+    "fichier": "vagues.jpg"
+  },
+  {
+    "scene": "brume",
+    "source": "Image fournie (visuels/)",
+    "fichier": "brume.jpg"
+  },
+  {
+    "scene": "lac",
+    "source": "Image fournie (visuels/)",
+    "fichier": "lac.jpg"
+  },
+  {
+    "scene": "ocean",
+    "source": "Image fournie (visuels/)",
+    "fichier": "ocean.jpg"
+  }
+]
