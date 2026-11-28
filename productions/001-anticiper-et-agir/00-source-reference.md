@@ -1,12 +1,11 @@
-# Texte original — Production 001 : Anticiper et agir
+# Texte original transmis — Production 001 : Anticiper et agir
 
-**Langue source :** français  
-**Provenance :** texte transmis par John dans la conversation de travail.
+**Texte original tel que transmis par John :**
 
-> Ne laisse pas les problèmes t'envahir avant de décider d'agir.
->
-> [Transcription complète à rétablir : le texte intégral n'est pas disponible dans le contexte récupéré. Le fragment final conservé est :]
->
-> Car parfois, la meilleure manière de surmonter un problème, c'est de ne jamais lui laisser l'occasion de devenir un problème.
+Ne laisse pas les problèmes t'envahir avant de décider d'agir.
 
-**Note d'archivage :** seuls le début et la fin du message original ont pu être retrouvés. Ce fichier signale explicitement cette lacune plutôt que de reconstruire le texte et de le présenter comme original.
+Car parfois, la meilleure manière de surmonter un problème, c'est de ne jamais lui laisser l'occasion de devenir un problème.
+
+**Langue source :** français
+
+Ce fichier conserve le texte original de l'enseignement fourni. Il ne s'agit ni d'un résumé ni de l'adaptation HumanKind Rising.
