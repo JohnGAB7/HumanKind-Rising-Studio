@@ -1,10 +1,9 @@
-# Texte original — Production 004 : L'amour sans idéalisation
+# Transcription originale — Production 004
 
-**Langue source :** anglais  
-**Provenance :** message transmis par John dans la conversation de travail.
+**Texte original tel que transmis :**
 
-> I don't want to take away all the romance from your life. But let me tell you this. There is no right person on this planet. ... First thing is to see whether I am the right person. Am I the right person? If you understand, you have your nonsense, they have their nonsense. You can adjust nonsense, nonsense.
+I don't want to take away all the romance from your life. But let me tell you this. There is no right person on this planet. If you put your heart into something, something may become wonderful. Is it the right thing? There's no right thing. Nobody ever found the right person anywhere, okay? If you get into that kind of unrealistic mindset, I have found the right person. Oh, you will be soon disappointed. You must understand there is no right person. First thing is to see whether I am the right person. Am I the right person? If you understand, you have your nonsense, they have their nonsense. You can adjust nonsense, nonsense
 
-**Limite de transcription :** une partie du texte intermédiaire n'a pas été retrouvée dans le contexte disponible. Les points de suspension signalent une omission dans la transcription récupérée; ils ne font pas partie du message original.
+**Langue source :** anglais
 
-**Nuance éditoriale :** accepter les imperfections ne signifie pas tolérer le mépris, la manipulation, la violence ou l'effacement de ses limites.
+Ce texte est la transcription source conservée dans Notion, séparée de l'adaptation française et des autres éléments éditoriaux HumanKind Rising.
