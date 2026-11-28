@@ -1,8 +1,8 @@
-# Source / référence — La conscience face à la compulsivité
+# Texte original — Production 002 : La conscience face à la compulsivité
 
-- Enseignement : évolution des moyens de communication, utilité des outils modernes, glissement possible vers les comportements compulsifs et rôle de la conscience.
-- Langue source : anglais.
-- Provenance : message transmis par John dans la conversation de travail.
-- Transcription intégrale : conservée dans l'espace privé HumanKind Rising — Enseignements de Notion ; elle n'est pas reproduite ici dans le dépôt public.
-- Page de suivi privée : https://app.notion.com/p/4206cc8c4f9781a2b3e1f30aeeaa6432
-- Note : les textes HumanKind Rising de ce dossier sont des adaptations et créations éditoriales originales, pas des citations du locuteur source.
+**Langue source :** anglais  
+**Provenance :** message transmis par John dans la conversation de travail.
+
+> I remember twenty-five years ago, thirty years ago, when I was building the foundation. You know, I had to go into those booths with a black phone and make hundred, two hundred calls at a time. Today if I say a word, it'll call who I want and it's done. So life has become so much better because of a phone. But now people are in a state of compulsiveness. Anything you give, they are so compulsive, they make it into suffering. Compulsive eating, compulsive drinking, compulsive everything. So the problem is not phone, problem is not something else. Compulsiveness is the problem. The solution is only consciousness. There is no other way. And controlling ourself. No, not controlling, becoming conscious. If you become conscious, you are liberated, not controlled.
+
+**Note éditoriale :** le texte source est conservé distinctement de l'adaptation et des créations HumanKind Rising.
