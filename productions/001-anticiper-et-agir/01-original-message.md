@@ -1,5 +1,5 @@
-# Message reçu — Anticiper et agir
+# Message original — Production 001
 
-À compléter avec le message source conservé par John, si son archivage public est souhaité et autorisé. À défaut, la référence et le résumé factuel du fichier `00-source-reference.md` suffisent.
+Le fichier de référence unique est [00-source-reference.md](00-source-reference.md).
 
-Le message reçu ne doit pas être confondu avec la création éditoriale HumanKind Rising.
+Le texte source complet n'a pas pu être rétabli à partir du contexte récupéré. Le fichier de référence conserve les fragments exacts disponibles et signale clairement cette lacune. Aucune reconstitution ne sera présentée comme une transcription originale.
