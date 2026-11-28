@@ -1,9 +1,7 @@
-# Source reference — 011
+# Transcription originale — Production 11
 
-## Original teaching (English)
+**Texte original tel que transmis :**
 
 What caller's information is just gossip. Some people, if you don't like the people who are gathering information, you call them gossipers. Otherwise you call them social scientists So this gossip that you have gathered, your intellect is thriving on it. If you keep your gossip aside, and if true intelligence begins to function, then you and the creator are not different. Once this is so, being blissful is very normal. It is not something that you aspire for. It is not something that you long for. It is not something that you create. That is the way it is. Only when you're blissful by your own nature, then you are willing to drop into the abyss of nothingness. Then you're truly ready to go nowhere. When you're not blissful by your own nature, it is very natural for you to anchor, to go somewhere. You want to go north, south, east or crooked, whichever way, you're still longing to go somewhere. You are not willing to drop into the abyss of nothingness. When you say, I'm seeking the boundless, you're talking about falling into nothingness. It is not a threat. Oh, is it a bottomless pit? Yes, it is. And a bottomless pit is not dangerous. Only a pit with a bottom is dangerous. If there is no bottom to the pit, what is the problem in jumping? You will be eternally suspended, unharmed, untouched by anything. If there is such a space which is bottomless, and if you fall into it, is there any danger? Bliss is a bottomless pit only when you fall into the bottomless pit are you truly blissful. Otherwise, you are constantly hankering, wanting to get somewhere, wanting to get somewhere. You cannot go anywhere. Wherever you go, whether you go north or south, still you are experience of life, all of life is happening only within you. You go up or down, all your life is happening only within you. This is not a trap. This is the door
 
-## Editorial note
-
-The source uses metaphors of “nothingness,” “the boundless,” and a bottomless pit. The adaptation presents them as contemplative images—not literal claims or invitations to physical danger.
+**Langue source :** anglais
